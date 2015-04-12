@@ -108,9 +108,12 @@
 #define H   2*Q //half 2/4
 #define Q   60000/bpm //quarter 1/4  // Here assumes 4/4 time signature!
 #define E   Q/2   //eighth 1/8
-#define S   Q/4 // sixteenth 1/16
+#define S_S   Q/4 // sixteenth 1/16
 #define W   4*Q // whole 4/4
 #define EE  E*4/3 // slightly slow E or a quick Q
+
+
+
 
 int num_leds = 12;                            // WRITE HERE TOTAL NUMBER OF LEDS CONNECTED
 int speaker_connect = 23;                     // WRITE HERE WHICH PIN THE SPEAKER IS CONNECTED TO
@@ -118,23 +121,37 @@ int leds[] = {22,21,20,19,18,17,16,15,14,13,12,11};     // WRITE HERE WHICH PIN 
 // DH TODO -- change it so that it divides High and Low note of song against how many LEDs there are so that ALL notes get played
 //      no matter how many various notes there are-- need a way to analyze the song somehow to assign the lights??
 
+
+/*   NEW SONG TEMPLATE
+int bpm = 115;
+int song[100][2] = {
+ 
+  
+}; 
+int num_notes = 100;
+int led_notes[] = { };
+*/
+
+
+
 /*
 // The Imperial March
 int bpm = 120;      // WRITE HERE THE TEMPO OF THE SONG (BPM)
 int song[100][2] = {  // WRITE HERE THE SONG IN FORMAT {{NOTE, DURATION}, {NOTE, DURATION}, ... {NOTE, DURATION}} MAX NOTES = 100
-       {AA3,Q},{AA3,Q},{AA3,Q},{FF3,E+S},{CC4,S},{AA3,Q},{FF3,E+S},{CC4,S},{AA3,H},
-       {EE4,Q},{EE4,Q},{EE4,Q},{FF4,E+S},{CC4,S},{Ab3,Q},{FF3,E+S},{CC4,S},{AA3,H},
-       {AA4,Q},{AA3,E+S},{AA3,S},{AA4,Q},{Ab4,E+S},{GG4,S},
-       {Gb4,S},{EE4,S},{FF4,E},{R,E},{Bb3,E},{Eb4,Q},{DD4,E+S},{Db4,S},
-       {CC4,S},{BB3,S},{CC4,E},{R,E},{FF3,E},{Ab3,Q},{FF3,E+S},{AA3,S},
-       {CC4,Q},{AA3,E+S},{CC4,S},{EE4,H},{AA4,Q},{AA3,E+S},{AA3,S},{AA4,Q},{Ab4,E+S},{GG4,S},
-       {Gb4,S},{EE4,S},{FF4,E},{R,E},{Bb3,E},{Eb4,Q},{DD4,E+S},{Db4,S},
-       {CC4,S},{BB3,S},{CC4,E},{R,E},{FF3,E},{Ab3,Q},{FF3,E+S},{CC4,S},
-       {AA3,Q},{FF3,E+S},{CC4,S},{AA3,H}
+       {AA3,Q},{AA3,Q},{AA3,Q},{FF3,E+S_S},{CC4,S_S},{AA3,Q},{FF3,E+S_S},{CC4,S_S},{AA3,H},
+       {EE4,Q},{EE4,Q},{EE4,Q},{FF4,E+S_S},{CC4,S_S},{Ab3,Q},{FF3,E+S_S},{CC4,S_S},{AA3,H},
+       {AA4,Q},{AA3,E+S_S},{AA3,S_S},{AA4,Q},{Ab4,E+S_S},{GG4,S_S},
+       {Gb4,S_S},{EE4,S_S},{FF4,E},{R,E},{Bb3,E},{Eb4,Q},{DD4,E+S_S},{Db4,S_S},
+       {CC4,S_S},{BB3,S_S},{CC4,E},{R,E},{FF3,E},{Ab3,Q},{FF3,E+S_S},{AA3,S_S},
+       {CC4,Q},{AA3,E+S_S},{CC4,S_S},{EE4,H},{AA4,Q},{AA3,E+S_S},{AA3,S_S},{AA4,Q},{Ab4,E+S_S},{GG4,S_S},
+       {Gb4,S_S},{EE4,S_S},{FF4,E},{R,E},{Bb3,E},{Eb4,Q},{DD4,E+S_S},{Db4,S_S},
+       {CC4,S_S},{BB3,S_S},{CC4,E},{R,E},{FF3,E},{Ab3,Q},{FF3,E+S_S},{CC4,S_S},
+       {AA3,Q},{FF3,E+S_S},{CC4,S_S},{AA3,H}
 };
 int num_notes = 70; // WRITE HERE HOW MANY NOTES IN THE SONG!
 int led_notes[] = {Ab3,AA3,FF3,CC4,EE4,FF4,Gb4,GG4};  //WRITE HERE WHAT NOTES TO LINK TO WHICH LEDS, MUST BE SAME NUMBER AS NUMBER OF LEDS ABOVE!
 */
+
 
 /*
 // Jingle Bell Rock
@@ -150,6 +167,7 @@ int song[100][2] = {
 int num_notes = 61;
 int led_notes[] = {DD5,EE5,FF5,GG5,AA5,Bb5,BB5,CC6}; // only 8 notes thus far
 */
+
 
 /*
 // Jingle Bell Rock (extended)
@@ -220,7 +238,7 @@ int song[100][2] = {
        {CC6,Q+E},{GG5,Q+E},{EE5,Q+E},{AA5,Q},{BB5,Q},{Bb5,E},{AA5,Q},{GG5,EE},{EE6,EE},{GG6,EE},{AA6,Q},{FF6,E},{GG6,Q},{EE6,Q},{CC6,E},{DD6,E},{BB5,Q+E},
        {CC6,Q+E},{GG5,Q+E},{EE5,Q+E},{AA5,Q},{BB5,Q},{Bb5,E},{AA5,Q},{GG5,EE},{EE6,EE},{GG6,EE},{AA6,Q},{FF6,E},{GG6,Q},{EE6,Q},{CC6,E},{DD6,E},{BB5,Q+E},
        {GG6,E},{Gb6,E},{FF6,E},{Eb6,Q},{EE6,Q},{Ab5,E},{AA5,E},{CC6,Q},{AA5,E},{CC6,E},{DD6,Q+E},{GG6,E},{Gb6,E},{FF6,E},{Eb6,Q},{EE6,Q},{AA6,Q},{AA6,E},{AA6,H}, //60
-       {GG6,E},{Gb6,E},{FF6,E},{Eb6,Q},{EE6,Q},{Ab5,E},{AA5,E},{CC6,Q},{AA5,E},{CC6,E},{DD6,Q+E},{Eb6,Q+S},{DD6,Q+S},{CC6,H}
+       {GG6,E},{Gb6,E},{FF6,E},{Eb6,Q},{EE6,Q},{Ab5,E},{AA5,E},{CC6,Q},{AA5,E},{CC6,E},{DD6,Q+E},{Eb6,Q+S_S},{DD6,Q+S_S},{CC6,H}
 };
 int num_notes = 74;
 int led_notes[] = {EE5,GG5,AA5,BB5,CC6,DD6,EE6,FF6,GG6,AA6}; 
@@ -229,51 +247,63 @@ int led_notes[] = {EE5,GG5,AA5,BB5,CC6,DD6,EE6,FF6,GG6,AA6};
 // NFL THEME -- from https://www.youtube.com/watch?v=lctRoh5kiIk
 int bpm = 112;
 int song[200][2] = {
-    {R,E},{CC4,S},{Db4,S},{Eb4,E},{Db4,S},{CC4,S},{GG4,H},{CC3,Q},{R,E},
-          {CC4,S},{Db4,S},{Eb4,E},{Db4,S},{CC4,S},{Ab4,H},{CC3,Q},{R,E},
-          {CC4,S},{Db4,S},{Eb4,E},{Db4,S},{CC4,S},{GG4,Q},{GG5,Q},{Ab5,Q},{CC6,Q},{BB5,H},
-    {CC3,H},{GG4,S},{Ab4,S},{Eb5,E},{GG4,S},{Ab4,S},{Eb5,E},{GG4,S},{Ab4,S},{Eb5,E+S},{FF5,E+S},{DD5,W},{CC3,H},   
-          {R,E},{GG4,S},{Ab4,S},{Eb5,E},{GG4,S},{Ab4,S},{Eb5,E},{GG4,S},{Ab4,S},{Eb5,E+S},{GG5,E+S},{FF5,H},{DD5,Q},{R,E},{Ab5,E+S},
+    {R,E},{CC4,S_S},{Db4,S_S},{Eb4,E},{Db4,S_S},{CC4,S_S},{GG4,H},{CC3,Q},{R,E},
+          {CC4,S_S},{Db4,S_S},{Eb4,E},{Db4,S_S},{CC4,S_S},{Ab4,H},{CC3,Q},{R,E},
+          {CC4,S_S},{Db4,S_S},{Eb4,E},{Db4,S_S},{CC4,S_S},{GG4,Q},{GG5,Q},{Ab5,Q},{CC6,Q},{BB5,H},
+    {CC3,H},{GG4,S_S},{Ab4,S_S},{Eb5,E},{GG4,S_S},{Ab4,S_S},{Eb5,E},{GG4,S_S},{Ab4,S_S},{Eb5,E+S_S},{FF5,E+S_S},{DD5,W},{CC3,H},   
+          {R,E},{GG4,S_S},{Ab4,S_S},{Eb5,E},{GG4,S_S},{Ab4,S_S},{Eb5,E},{GG4,S_S},{Ab4,S_S},{Eb5,E+S_S},{GG5,E+S_S},{FF5,H},{DD5,Q},{R,E},{Ab5,E+S_S},
     {GG5,Q},{Ab5,Q},{Bb5,Q},{CC6,Q},{CC6,H},{DD6,H},
-          {R,E},{GG4,S},{Ab4,S},{Eb5,E},{GG4,S},{Ab4,S},{Eb5,E},{GG4,S},{Ab4,S},{Eb5,E+S},{FF5,E+S},{DD5,W},{CC3,H},
+          {R,E},{GG4,S_S},{Ab4,S_S},{Eb5,E},{GG4,S_S},{Ab4,S_S},{Eb5,E},{GG4,S_S},{Ab4,S_S},{Eb5,E+S_S},{FF5,E+S_S},{DD5,W},{CC3,H},
 
-    {CC3,H},{GG4,S},{Ab4,S},{Eb5,E},{GG4,S},{Ab4,S},{Eb5,E},{GG4,S},{Ab4,S},{Eb5,E+S},{Bb5,E+S},{Ab5,H},{FF5,H},{GG5,Q},{R,Q},
+    {CC3,H},{GG4,S_S},{Ab4,S_S},{Eb5,E},{GG4,S_S},{Ab4,S_S},{Eb5,E},{GG4,S_S},{Ab4,S_S},{Eb5,E+S_S},{Bb5,E+S_S},{Ab5,H},{FF5,H},{GG5,Q},{R,Q},
           {CC3,H},{CC3,H},{GG5,Q},{Ab5,Q},{CC6,Q},{BB5,H},
           
-    {R,E},{CC4,S},{Db4,S},{Eb4,E},{Db4,S},{CC4,S},{GG4,H},{CC3,Q},{R,E},
-          {CC4,S},{Db4,S},{Eb4,E},{Db4,S},{CC4,S},{Ab4,H},{CC3,Q},{R,E},
-          {CC4,S},{Db4,S},{Eb4,E},{Db4,S},{CC4,S},{GG4,Q},{GG5,Q},{Ab5,Q},{CC6,Q},{BB5,H},{CC6,Q}      
+    {R,E},{CC4,S_S},{Db4,S_S},{Eb4,E},{Db4,S_S},{CC4,S_S},{GG4,H},{CC3,Q},{R,E},
+          {CC4,S_S},{Db4,S_S},{Eb4,E},{Db4,S_S},{CC4,S_S},{Ab4,H},{CC3,Q},{R,E},
+          {CC4,S_S},{Db4,S_S},{Eb4,E},{Db4,S_S},{CC4,S_S},{GG4,Q},{GG5,Q},{Ab5,Q},{CC6,Q},{BB5,H},{CC6,Q}      
          
   
 };
 int num_notes = 200;
 int led_notes[] = {CC3,CC4,Db4,Eb4,GG4,Ab4,DD5,FF5,GG5,Ab5,BB5,CC6};
 
-
 /*
 // PLAY SCALES
 int bpm = 112;
-int song[100][2] = { //CC4 and GG5 not working on way up, GG4 on way down??
-  {CC3,Q},{CC4,Q},{Db4,Q},{Eb4,Q},{GG4,Q},{Ab4,Q},{GG5,Q},{Ab5,Q},{BB5,Q},{CC6,Q},
+int song[100][2] = {
+// half notes
+  {CC4,H},{DD4,H},{EE4,H},{FF4,H},{GG4,H},{AA4,H},{BB4,H},{CC5,H},
   {R,H},
-  {CC6,Q},{BB5,Q},{Ab5,Q},{GG5,Q},{Ab4,Q},{GG4,Q},{Eb4,Q},{Db4,Q},{CC4,Q},{CC3,Q},
+  {CC5,H},{BB4,H},{AA4,H},{GG4,H},{FF4,H},{EE4,H},{DD4,H},{CC4,H},
   {R,H},
-  {CC3,Q},{CC4,Q},{Db4,Q},{Eb4,Q},{GG4,Q},{Ab4,Q},{GG5,Q},{Ab5,Q},{BB5,Q},{CC6,Q}  
+
+// quarter notes
+  {CC4,Q},{DD4,Q},{EE4,Q},{FF4,Q},{GG4,Q},{AA4,Q},{BB4,Q},{CC5,Q},
+  {R,H},
+  {CC5,Q},{BB4,Q},{AA4,Q},{GG4,Q},{FF4,Q},{EE4,Q},{DD4,Q},{CC4,Q},
+  {R,H},
+
+// sixteenth notes
+  {CC4,S_S},{DD4,S_S},{EE4,S_S},{FF4,S_S},{GG4,S_S},{AA4,S_S},{BB4,S_S},{CC5,S_S},
+  {R,H},
+  {CC5,S_S},{BB4,S_S},{AA4,S_S},{GG4,S_S},{FF4,S_S},{EE4,S_S},{DD4,S_S},{CC4,S_S},
+  {R,H}
+
+
 };
-int num_notes = 32;
-int led_notes[] = {CC3,CC4,Db4,Eb4,GG4,Ab4,GG5,Ab5,BB5,CC6};
+int num_notes = 54;
+int led_notes[] = {CC4,DD4,EE4,FF4,GG4,AA4,BB4,CC5,DD5};
 
 */
 
 
 
-
-
-
+//
 // DO NOT MODIFY BELOW THIS LINE!!! SONGS CODED ABOVE!
 //
 //
 
+// initial setup for LEDs and speaker ports
 void setup() {     
   pinMode(speaker_connect, OUTPUT);   
   for (int i=0; i < num_leds; i++) {
@@ -302,14 +332,14 @@ void leds_on_v2(int note) {
   } 
 }
 
-
-void leds_off() { // turn off all LEDs
+// Turn off all LEDs
+void leds_off() {
   for (int i=0; i < num_leds; i++) {
     digitalWrite(leds[i],LOW);  
   }
 }
 
-
+// Plays a single note
 void play_note(int note, long duration) {
   int blink_lights = 1;     // whether to blink lights or not (1=yes, 0=no)
   
@@ -330,6 +360,7 @@ void play_note(int note, long duration) {
   
 }
 
+// Play an entire song
 void play_song(int which_song) {
   //int len = sizeof(melody)/sizeof(int);
   for (int i=0; i < num_notes; i++) {
