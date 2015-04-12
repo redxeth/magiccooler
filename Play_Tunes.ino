@@ -309,6 +309,7 @@ void setup() {
   for (int i=0; i < num_leds; i++) {
     pinMode(leds[i], OUTPUT);
   } 
+  leds_off();
   delay(1000); // delay 1sec before starting music
 }
 
@@ -325,9 +326,9 @@ void leds_on(int note) {
 void leds_on_v2(int note) {
   for (int i=0; i < num_leds; i++) {
     if (led_notes[i] == note) {
-      digitalWrite(leds[i],HIGH); 
+      digitalWrite(leds[i],LOW); 
     } else {
-      digitalWrite(leds[i],LOW);
+      digitalWrite(leds[i],HIGH);
     }
   } 
 }
@@ -335,7 +336,7 @@ void leds_on_v2(int note) {
 // Turn off all LEDs
 void leds_off() {
   for (int i=0; i < num_leds; i++) {
-    digitalWrite(leds[i],LOW);  
+    digitalWrite(leds[i],HIGH);  
   }
 }
 
