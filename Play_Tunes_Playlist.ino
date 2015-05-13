@@ -120,12 +120,15 @@
 #define SUPER_MARIO                2
 #define NFL                        3
 #define SCALES                     4
-#define NUM_SONGS                  5  // update to be total number of songs in playlist
+#define ODE_TO_JOY                 5
+#define NUM_SONGS                  6  // update to be total number of songs in playlist
 
 
 int num_leds = 10;                                // WRITE HERE TOTAL NUMBER OF LEDS CONNECTED
 int speaker_connect = 23;                         // WRITE HERE WHICH PIN THE SPEAKER IS CONNECTED TO
+int switch_connect = 0;                           // WRITE HERE WHICH PIN THE MODE SWITCH IS CONNECTED TO
 int leds[] = {22,21,20,19,18,17,16,15,14,13};     // WRITE HERE WHICH PIN THE LEDS ARE CONNECTED TO:  1, 2, 3, 4, 5 .... 
+int music_mode;                                   // mode read from switch
 
 // Use pointers for global variables
 int *song;           // use to point to array of int.  E.G. to assign since 2d array: song = *song0;            to use: *(*(song+i)+j) <-- questionable
@@ -285,6 +288,25 @@ int led_notes4[] = {CC4,DD4,EE4,FF4,GG4,AA4,BB4,CC5,DD5,EE5};
 
 
 
+// ODE TO JOY
+int bpm5 = 120;
+int song5[100][2] = {{EE4,Q},{EE4,Q},{FF4,Q},{GG4,Q},{GG4,Q},{FF4,Q},{EE4,Q},{DD4,Q},
+                     {CC4,Q},{CC4,Q},{DD4,Q},{EE4,Q},{EE4,Q},{DD4,Q},{DD4,H},
+                     {EE4,Q},{EE4,Q},{FF4,Q},{GG4,Q},{GG4,Q},{FF4,Q},{EE4,Q},{DD4,Q},
+                     {CC4,Q},{CC4,Q},{DD4,Q},{EE4,Q},{DD4,Q},{CC4,Q},{CC4,H},
+                     
+                     {DD4,Q},{DD4,Q},{EE4,Q},{CC4,Q},{DD4,Q},{FF4,Q},{EE4,Q},{CC4,Q},
+                     {DD4,Q},{FF4,Q},{EE4,Q},{DD4,Q},{CC4,Q},{DD4,Q},{GG4,H},                     
+                     {EE4,Q},{EE4,Q},{FF4,Q},{GG4,Q},{GG4,Q},{FF4,Q},{EE4,Q},{DD4,Q},
+                     {CC4,Q},{CC4,Q},{DD4,Q},{EE4,Q},{DD4,Q},{CC4,Q},{CC4,H}                     
+};
+
+
+int num_notes5 = 60;
+int led_notes5[] = {CC4,DD4,EE4,FF4,GG4};
+
+
+
 
 // **********************************************************************************************
 // **********************************************************************************************
@@ -343,6 +365,12 @@ void choose_song(int which_song) {
       num_notes = &num_notes4;
       song = *song4;
       led_notes = led_notes4;
+      break;
+    case ODE_TO_JOY:
+      bpm = &bpm5;
+      num_notes = &num_notes5;
+      song = *song5;
+      led_notes = led_notes5;
       break;
     
   }
@@ -453,9 +481,11 @@ void setup() {
  if (DEBUGME == 1) {
    Serial.begin(9600);
  }
+ // set inputs
+ pinMode(switch_connect, INPUT);
  
  
- //
+ // set outputs
   pinMode(speaker_connect, OUTPUT);   
   for (int i=0; i < num_leds; i++) {
     pinMode(leds[i], OUTPUT);
@@ -467,9 +497,14 @@ void setup() {
 // the loop routine runs over and over again forever
 // basically like main with while(1).
 void loop() {
+  
+ music_mode = digitalRead(switch_connect);
+ 
  if (DEBUGME == 1) {
    debug_print_song(IMPERIAL_MARCH);
  }
+ 
+ if (music_mode == HIGH) { // play all songs
  play_song(IMPERIAL_MARCH);
  delay(1000);
  play_song(JINGLE_BELL_ROCK);
@@ -478,8 +513,12 @@ void loop() {
  delay(1000);
   play_song(NFL);
  delay(1000); 
- play_song(SCALES); // doesn't work
+   play_song(ODE_TO_JOY);
  delay(1000);
+ } else {         // play only scales
+   play_song(SCALES);
+   delay(1000);
+ }
 }
     
     
