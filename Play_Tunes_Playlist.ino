@@ -1,110 +1,155 @@
-// From: http://www.instructables.com/id/How-to-easily-play-music-with-buzzer-on-arduino-Th/
+// Source: https://github.com/redxeth/magiccooler
+//
+// Credit to: http://www.instructables.com/id/How-to-easily-play-music-with-buzzer-on-arduino-Th/
 // NB: ALL NOTES DEFINED WITH STANDARD ENGLISH NAMES, EXCEPT FOR "A"
 // WHICH HERE IS CALLED "AA" BECAUSE A0,A1...ARE THE ANALOG PINS ON ARDUINO.
 // (Ab IS CALLED Ab AND NOT AAb)
 #define	CC0     16.35
+#define	Cs0	17.32
 #define	Db0	17.32
 #define	DD0	18.35
+#define	Ds0	19.45
 #define	Eb0	19.45
 #define	EE0	20.60
 #define	FF0	21.83
+#define	Fs0	23.12
 #define	Gb0	23.12
 #define	GG0	24.50
+#define Gs0     25.96
 #define	Ab0	25.96
 #define	AA0	27.50
+#define As0     29.14
 #define	Bb0	29.14
 #define	BB0	30.87
 #define	CC1	32.70
+#define Cs1     34.65
 #define	Db1	34.65
 #define	DD1	36.71
+#define Ds1     38.89
 #define	Eb1	38.89
 #define	EE1	41.20
 #define	FF1	43.65
+#define	Fs1	46.25
 #define	Gb1	46.25
 #define	GG1	49.00
+#define	Gs1	51.91
 #define	Ab1	51.91
 #define	AA1	55.00
+#define As1     58.27
 #define	Bb1	58.27
 #define	BB1	61.74
 #define	CC2	65.41
+#define Cs2     69.30
 #define	Db2	69.30
 #define	DD2	73.42
+#define Ds2     77.78
 #define	Eb2	77.78
 #define	EE2	82.41
 #define	FF2	87.31
+#define Fs2     92.50
 #define	Gb2	92.50
 #define	GG2	98.00
+#define Gs2     103.83
 #define	Ab2	103.83
 #define	AA2	110.00
+#define As2     116.54
 #define	Bb2	116.54
 #define	BB2	123.47
 #define	CC3	130.81
+#define	Cs3	138.59
 #define	Db3	138.59
 #define	DD3	146.83
+#define	Ds3	155.56
 #define	Eb3	155.56
 #define	EE3	164.81
 #define	FF3	174.61
+#define	Fs3	185.00
 #define	Gb3	185.00
 #define	GG3	196.00
+#define	Gs3	207.65
 #define	Ab3	207.65
 #define	AA3	220.00
+#define	As3	233.08
 #define	Bb3	233.08
 #define	BB3	246.94
 #define	CC4	261.63 // <-- MIDDLE C
+#define	Cs4	277.18
 #define	Db4	277.18
 #define	DD4	293.66
+#define	Ds4	311.13
 #define	Eb4	311.13
 #define	EE4	329.63
 #define	FF4	349.23
+#define	Fs4	369.99
 #define	Gb4	369.99
 #define	GG4	392.00
+#define	Gs4	415.30
 #define	Ab4	415.30
 #define	AA4	440.00
+#define	As4	466.16
 #define	Bb4	466.16
 #define	BB4	493.88
 #define	CC5	523.25
+#define	Cs5	554.37
 #define	Db5	554.37
 #define	DD5	587.33
+#define	Ds5	622.25
 #define	Eb5	622.25
 #define	EE5	659.26
 #define	FF5	698.46
+#define	Fs5	739.99
 #define	Gb5	739.99
 #define	GG5	783.99
+#define	Gs5	830.61
 #define	Ab5	830.61
 #define	AA5	880.00
+#define	As5	932.33
 #define	Bb5	932.33
 #define	BB5	987.77
 #define	CC6	1046.50
+#define	Cs6	1108.73
 #define	Db6	1108.73
 #define	DD6	1174.66
+#define	Ds6	1244.51
 #define	Eb6	1244.51
 #define	EE6	1318.51
 #define	FF6	1396.91
+#define	Fs6	1479.98
 #define	Gb6	1479.98
 #define	GG6	1567.98
+#define	Gs6	1661.22
 #define	Ab6	1661.22
 #define	AA6	1760.00
+#define	As6	1864.66
 #define	Bb6	1864.66
 #define	BB6	1975.53
 #define	CC7	2093.00
+#define	Cs7	2217.46
 #define	Db7	2217.46
 #define	DD7	2349.32
+#define	Ds7	2489.02
 #define	Eb7	2489.02
 #define	EE7	2637.02
 #define	FF7	2793.83
+#define	Fs7	2959.96
 #define	Gb7	2959.96
 #define	GG7	3135.96
+#define	Gs7	3322.44
 #define	Ab7	3322.44
 #define	AA7	3520.01
+#define	As7	3729.31
 #define	Bb7	3729.31
 #define	BB7	3951.07
 #define	CC8	4186.01
+#define	Cs8	4434.92
 #define	Db8	4434.92
 #define	DD8	4698.64
+#define	Ds8	4978.03
 #define	Eb8	4978.03
 #define R       0        // rest
 
 #define DEBUGME 0        // set to 0 for no debug, 1 for debug song arrays, 2 for print debug while playing music
+#define RANDOM 1         // set to 0 for play songs sequential, 1 for random play
 
 // DURATION OF THE NOTES
 #define S_S 1    // Q/4 // sixteenth 1/16
@@ -115,14 +160,29 @@
 #define EE  8/3  // E*4/3 // slightly slow E or a quick Q
 
 // Here list songs by name
-#define IMPERIAL_MARCH             0
-#define JINGLE_BELL_ROCK           1
-#define SUPER_MARIO                2
-#define NFL                        3
-#define SCALES                     4
-#define ODE_TO_JOY                 5
-#define NUM_SONGS                  6  // update to be total number of songs in playlist
+#define IMPERIAL_MARCH             0  //DH
+#define JINGLE_BELL_ROCK           1  //DH
+#define SUPER_MARIO                2  //DH
+#define NFL                        3  //DH
+#define SCALES                     4  //DH
+#define ODE_TO_JOY                 5  //DH
+#define MOUNTAIN_KING              6  //DH
+#define BAA_BAA                    7  //GRH
+#define BAT_MAN                    8  //DH
+#define GILLIGAN                   9  //DH
+#define STAR_WARS                  10 //DH
+#define TWINKLE_TWINKLE            11 //GRH
+#define CLOCKS                     12 //GRH
+#define POKER_FACE                 13 //GRH
+#define NUM_SONGS                  14  // update to be total number of songs in playlist
 
+// FUTURE SONGS
+//  - what child is this
+//  - blackbird
+//  - house of the rising sun
+//  - good bad and ugly
+//  - chestnuts roasting on open fire
+//  - dear prudence
 
 int num_leds = 10;                                // WRITE HERE TOTAL NUMBER OF LEDS CONNECTED
 int speaker_connect = 23;                         // WRITE HERE WHICH PIN THE SPEAKER IS CONNECTED TO
@@ -137,8 +197,24 @@ int *bpm;            // use to point to int.           E.G.                to as
 int *num_notes;      // use to point to int.           E.G.                to assign: num_notes = &num_notes0;  to use: *num_notes
 
 
-// DH TODO -- change it so that it divides High and Low note of song against how many LEDs there are so that ALL notes get played
-//      no matter how many various notes there are-- need a way to analyze the song somehow to assign the lights??
+// DH TODO LIST
+//  - Need a way to prevent skipping lights!!
+//  - Randomizer-- play songs randomly
+//  - Store songs in NVM! (256kB) and load into RAM upon 'choose song'.  Not sure the loading how to do yet... // PROGMEM in Arduino reference.  May have to modify to have
+//    the durations based on BPM while song is playing-- and not precalculated as arrays are stored... or I guess they coud be stored then modified upon song switching?  Not
+//    while song is playing
+//  - need to o-scope what the output sound wave looks like -- DAC sinusoid?  what levels?
+//  - Change LED selection from specifying the notes to having code prepare which LEDs to play based on notes automatically
+//    so that it divides High and Low note of song against how many LEDs there are so that ALL notes get played
+//    no matter how many various notes there are.
+//  - Assign key to song-- so can shift key if desired (or even octave)
+//  - easier way to defines songs, stores in file or SD card? use MIDI format or something...
+//  - genre of song?
+//  - title of song?
+//  - multitone play capability (chords and 4-part harmony) -- up to 4 separate outputs!  Or some what to combine the tones so that only 1 output is still required
+//  - button to choose song or go to next song (would have to interrupt song so would have to use interrupts).  Debounce obviously.
+
+
 
 
 
@@ -156,7 +232,7 @@ int song0[100][2] =  {  // WRITE HERE THE SONG IN FORMAT {{NOTE, DURATION}, {NOT
        {AA3,Q},{FF3,E+S_S},{CC4,S_S},{AA3,H}
 };
 int num_notes0 = 70;    // WRITE HERE HOW MANY NOTES IN THE SONG!
-int led_notes0[] = {Ab3,AA3,FF3,CC4,EE4,FF4,Gb4,GG4};  //WRITE HERE WHAT NOTES TO LINK TO WHICH LEDS, MUST BE SAME NUMBER AS NUMBER OF LEDS ABOVE!
+int led_notes0[] = {Ab3,AA3,BB3,FF3,CC4,EE4,FF4,Gb4,Ab4,GG4};  //WRITE HERE WHAT NOTES TO LINK TO WHICH LEDS, MUST BE SAME NUMBER AS NUMBER OF LEDS ABOVE!
 
                                             
 
@@ -256,7 +332,7 @@ int song3[200][2] = {
   
 };
 int num_notes3 = 200;
-int led_notes3[] = {CC3,CC4,Db4,Eb4,GG4,Ab4,DD5,FF5,GG5,Ab5,BB5,CC6};
+int led_notes3[] = {CC3,CC4,Db4,Eb4,GG4,Ab4,GG5,Ab5,BB5,CC6};
 
 
 
@@ -265,22 +341,18 @@ int bpm4 = 112;
 int song4[100][2] = {
 // half notes
   {CC4,H},{DD4,H},{EE4,H},{FF4,H},{GG4,H},{AA4,H},{BB4,H},{CC5,H},{DD5,H},{EE5,H},
-  {R,H},
-  {EE5,H},{DD5,H},{CC5,H},{BB4,H},{AA4,H},{GG4,H},{FF4,H},{EE4,H},{DD4,H},{CC4,H},
-  {R,H},
+  {DD5,H},{CC5,H},{BB4,H},{AA4,H},{GG4,H},{FF4,H},{EE4,H},{DD4,H},{CC4,H},
+  {R,S_S},
 
 // quarter notes
   {CC4,Q},{DD4,Q},{EE4,Q},{FF4,Q},{GG4,Q},{AA4,Q},{BB4,Q},{CC5,Q},{DD5,Q},{EE5,Q},
-  {R,Q},
-  {EE5,Q},{DD5,Q},{CC5,Q},{BB4,Q},{AA4,Q},{GG4,Q},{FF4,Q},{EE4,Q},{DD4,Q},{CC4,Q},
-  {R,Q},
+  {DD5,Q},{CC5,Q},{BB4,Q},{AA4,Q},{GG4,Q},{FF4,Q},{EE4,Q},{DD4,Q},{CC4,Q},
+  {R,S_S},
 
 // sixteenth notes
   {CC4,S_S},{DD4,S_S},{EE4,S_S},{FF4,S_S},{GG4,S_S},{AA4,S_S},{BB4,S_S},{CC5,S_S},{DD5,S_S},{EE5,S_S},
-  {R,S_S},
-  {EE5,S_S},{DD5,S_S},{CC5,S_S},{BB4,S_S},{AA4,S_S},{GG4,S_S},{FF4,S_S},{EE4,S_S},{DD4,S_S},{CC4,S_S},
+  {DD5,S_S},{CC5,S_S},{BB4,S_S},{AA4,S_S},{GG4,S_S},{FF4,S_S},{EE4,S_S},{DD4,S_S},{CC4,S_S},
   {R,S_S}
-
 
 };
 int num_notes4 = 66;
@@ -306,6 +378,245 @@ int num_notes5 = 60;
 int led_notes5[] = {CC4,DD4,EE4,FF4,GG4};
 
 
+// IN THE HALL OF THE MOUNTAIN KING
+int bpm6 = 120;
+int song6[200][2] = {
+                     {AA3,E},{BB3,E},{CC4,E},{DD4,E},{EE4,E},{CC4,E},{EE4,Q},          // meas 1
+                     {Ds4,E},{BB3,E},{Ds4,Q},{DD4,E},{Bb3,E},{DD4,Q},                  // meas 2
+                     {AA3,E},{BB3,E},{CC4,E},{DD4,E},{EE4,E},{CC4,E},{EE4,E},{AA4,E},  // meas 3
+                     {GG4,E},{EE4,E},{CC4,E},{EE4,E},{GG4,H},                          // meas 4
+                     
+                     {AA4,E},{BB4,E},{CC5,E},{DD5,E},{EE5,E},{CC5,E},{EE5,Q},          // meas 5
+                     {Ds5,E},{BB4,E},{Ds5,Q},{DD5,E},{Bb4,E},{DD5,Q},                  // meas 6
+                     {AA4,E},{BB4,E},{CC5,E},{DD5,E},{EE5,E},{CC5,E},{EE5,E},{AA5,E},  // meas 7
+                     {GG5,E},{EE5,E},{CC5,E},{EE5,E},{GG5,H},                          // meas 8
+                     
+                     {EE4,E},{Fs4,E},{Gs4,E},{AA4,E},{BB4,E},{Ab4,E},{BB4,Q},          // meas 9
+                     {CC5,E},{Gs4,E},{CC5,Q},{BB4,E},{Gs4,E},{BB4,Q},                  // meas 10
+                     {EE4,E},{Fs4,E},{Gs4,E},{AA4,E},{BB4,E},{Ab4,E},{BB4,Q},          // meas 11
+                     {CC5,E},{Gs4,E},{CC5,Q},{BB4,H},                                  // meas 12
+                     
+                     {EE4,E},{Fs4,E},{Gs4,E},{AA4,E},{BB4,E},{Ab4,E},{BB4,Q},          // meas 13 (repeat 9)
+                     {CC5,E},{Gs4,E},{CC5,Q},{BB4,E},{Gs4,E},{BB4,Q},                  // meas 14 (repeat 10)
+                     {EE4,E},{Fs4,E},{Gs4,E},{AA4,E},{BB4,E},{Ab4,E},{BB4,Q},          // meas 15 (repeat 11)
+                     {CC5,E},{Gs4,E},{CC5,Q},{BB4,H},                                  // meas 16 (repeat 12)
+
+                     {AA3,E},{BB3,E},{CC4,E},{DD4,E},{EE4,E},{CC4,E},{EE4,Q},          // meas 17
+                     {Ds4,E},{BB3,E},{Ds4,Q},{DD4,E},{Bb3,E},{DD4,Q},                  // meas 18
+                     {AA3,E},{BB3,E},{CC4,E},{DD4,E},{EE4,E},{CC4,E},{EE4,E},{AA4,E},  // meas 19
+                     {GG4,E},{EE4,E},{CC4,E},{EE4,E},{AA3,H}                           // meas 20
+                     
+
+};
+
+int num_notes6 = 126; // 20 measures
+
+int led_notes6[] = {AA3,Bb3,BB3,CC4,DD4,Eb4,EE4,CC5,DD5,EE5};
+
+
+// BAA BAA BLACK SHEEP
+int bpm7 = 120;
+int song7[52][2] = {
+                      {CC4,Q}, {CC4,Q}, {GG4,Q}, {GG4,Q}, {AA4,E}, {AA4,E}, {AA4,E}, {AA4,E}, {GG4,H}, //9 Baa baa black sheep, have you any wool?
+                      {FF4,Q}, {FF4,Q}, {EE4,Q},{EE4,Q}, {DD4,Q}, {DD4,Q},  {CC4,H}, //7 Yes sir, yes sir, three bags full.
+                      {GG4,Q}, {GG4,E}, {GG4,E}, {FF4,Q}, {FF4,Q}, {EE4,Q}, {EE4,E}, {EE4,E}, {DD4,H}, //9
+                      {GG4,Q}, {GG4,E}, {GG4,E}, {FF4,E}, {FF4,E}, {FF4,E}, {FF4,E}, {EE4,Q}, {EE4,E}, {EE4,E}, {DD4,H}, //11
+                      {CC4,Q}, {CC4,Q}, {GG4,Q}, {GG4,Q}, {AA4,E}, {AA4,E}, {AA4,E}, {AA4,E}, {GG4,H}, //9 Baa baa black sheep, have you any wool?
+                      {FF4,Q}, {FF4,Q}, {EE4,Q},{EE4,Q}, {DD4,Q}, {DD4,Q},  {CC4,H}, //7 Yes sir, yes sir, three bags full.
+};
+int num_notes7 = 52;
+int led_notes7[] = {CC4,DD4,EE4,FF4,GG4,AA4,BB4,CC5,DD5,EE5};
+
+
+
+// THE BATMAN THEME
+int bpm8 = 240;
+int song8[200][2] = {
+                        {DD3,Q},{DD3,Q},{Db3,Q},{Db3,Q}, //meas 1
+                        {CC3,Q},{CC3,Q},{Cs3,Q},{Cs3,Q}, //meas 2
+                        {DD3,Q},{DD3,Q},{Db3,Q},{Db3,Q}, //meas 3
+                        {CC3,Q},{CC3,Q},{Cs3,Q},{Cs3,Q}, //meas 4
+
+                        {DD3,Q},{DD3,Q},{Db3,Q},{Db3,Q}, //meas 5
+                        {CC3,Q},{CC3,Q},{Cs3,Q},{Cs3,Q}, //meas 6
+                        {DD3,Q},{DD3,Q},{Db3,Q},{Db3,Q}, //meas 7
+                        {CC3,Q},{CC3,Q},{Cs3,Q},{Ds3,Q}, //meas 8
+                        
+                        {GG3,Q},{GG3,Q},{Gb3,Q},{Gb3,Q}, //meas 9
+                        {FF3,Q},{FF3,Q},{Fs3,Q},{Fs3,Q}, //meas 10
+                        {GG3,Q},{GG3,Q},{Gb3,Q},{Gb3,Q}, //meas 11
+                        {FF3,Q},{FF3,Q},{Fs3,Q},{Gs3,Q}, //meas 12
+
+                        {DD3,Q},{DD3,Q},{Db3,Q},{Db3,Q}, //meas 13
+                        {CC3,Q},{CC3,Q},{Cs3,Q},{Cs3,Q}, //meas 14
+                        {DD3,Q},{DD3,Q},{Db3,Q},{Db3,Q}, //meas 15
+                        {CC3,Q},{CC3,Q},{Cs3,Q},{Ds3,Q}, //meas 16
+                        
+                        {AA3,Q},{AA3,Q},{Ab3,Q},{Ab3,Q}, //meas 17
+                        {GG3,Q},{GG3,Q},{Gs3,Q},{AA3,Q}, //meas 18                        
+                        {GG3,Q},{GG3,Q},{Gb3,Q},{Gb3,Q}, //meas 19                        
+                        {FF3,Q},{FF3,Q},{Fs3,Q},{GG3,Q}, //meas 20
+
+                        {DD3,Q},{DD3,Q},{Db3,Q},{Db3,Q}, //meas 21
+                        {CC3,Q},{CC3,Q},{Cs3,Q},{Cs3,Q}, //meas 22
+                        {DD3,Q},{DD3,Q},{Db3,Q},{Db3,Q}, //meas 23
+                        {CC3,Q},{CC3,Q},{Cs3,Q},{Cs3,Q}, //meas 24 
+                        
+                        {DD4,Q},{DD4,Q},{Db4,Q},{Db4,Q}, //meas 25
+                        {CC4,Q},{CC4,Q},{Cs4,Q},{Cs4,Q}, //meas 26
+                        {DD4,Q},{DD4,Q},{Db4,Q},{Db4,Q}, //meas 27
+                        {CC4,Q},{CC4,Q},{Cs4,Q},{Cs4,Q}, //meas 28 
+                        
+                        {DD5,Q},{DD5,Q},{Cs5,Q},{Cs5,Q}, //meas 29
+                        {CC5,Q},{CC5,Q},{Cs5,Q},{Cs5,Q}, //meas 30
+                        {DD5,Q},{R,H},                   //meas 31
+                        {FF5,H},{R,S_S},{FF5,H},{FF5,W}  //meas 32
+                        
+
+}; 
+int num_notes8 = 126;
+int led_notes8[] ={CC3,DD3,Db3,FF3,Fs3,Gb3,GG3,Ab3,AA3,CC5};
+
+
+// GILLIGAN'S ISLAND
+int bpm9 = 160;
+int song9[200][2] = { {AA4,Q},                                 //meas 0
+
+                      {DD4,Q},{AA4,Q},{AA4,Q},{AA4,E},{AA4,E}, //meas 1
+                      {GG4,Q},{EE4,Q},{CC4,Q},{R,E},{CC4,E},   //meas 2
+                      {DD4,Q},{AA4,E},{AA4,E},{AA4,Q},{AA4,Q}, //meas 3
+                     
+                      {GG4,H},{R,Q},{EE4,Q},                   //meas 4
+                      {DD4,Q},{AA4,Q},{AA4,Q},{AA4,Q},         //meas 5
+                      {GG4,Q},{CC5,Q},{CC5,Q},{GG4,Q},         //meas 6
+                      {FF4,Q},{FF4,Q},{EE4,Q},{CC4,Q},         //meas 7
+
+                      {DD4,H},{R,Q},{DD4,Q},                   //meas 8 (repeat 1)
+                      {DD4,Q},{AA4,Q},{AA4,Q},{AA4,E},{AA4,E}, //meas 1
+                      {GG4,Q},{EE4,Q},{CC4,Q},{R,E},{CC4,E},   //meas 2
+                      {DD4,Q},{AA4,E},{AA4,E},{AA4,Q},{AA4,Q}, //meas 3
+                     
+                      {GG4,H},{R,Q},{EE4,Q},                   //meas 4
+                      {DD4,Q},{AA4,Q},{AA4,Q},{AA4,Q},         //meas 5
+                      {GG4,Q},{CC5,Q},{CC5,Q},{GG4,Q},         //meas 6
+                      {FF4,Q},{FF4,Q},{EE4,Q},{CC4,Q},         //meas 7
+
+                      {DD4,H},{R,Q},{DD4,Q},                   //meas 8 (repeat 2)
+                      {FF4,H},{EE4,Q},{CC4,Q},                 //meas 9
+                      {DD4,H},{R,Q},{DD4,Q},                   //meas 10
+                      
+                      {EE4,Q},{BB4,Q},{BB4,Q},{BB4,Q},         //meas 11
+                      {AA4,Q},{Fs4,Q},{DD4,Q},{R,E},{DD4,E},   //meas 12
+                      {EE4,Q},{BB4,Q},{BB4,Q},{BB4,Q},         //meas 13
+                      
+                      {AA4,H},{R,Q},{AA4,Q},                   //meas 14
+                      {EE4,Q},{BB4,E},{BB4,E},{BB4,E},{BB4,E},{BB4,E},{BB4,E}, //meas 15
+                      {AA4,Q},{DD5,Q},{DD5,Q},{AA4,Q},         //meas 15
+                      {GG4,Q},{GG4,Q},{Fs4,Q},{DD4,Q},         //meas 16
+                      {EE4,H},{R,Q},{EE4,Q},                   //meas 17
+                      {GG4,Q},{GG4,Q},{Fs4,Q},{DD4,Q},         //meas 18
+                      {EE4,H},{R,Q},{DD4,Q},                   //meas 19
+                      
+                      
+                      {EE4,Q},{BB4,Q},{BB4,Q},{BB4,E},{BB4,E},
+                      {AA4,Q},{Fs4,Q},{DD4,Q},{DD4,Q},
+                      {EE4,Q},{BB4,Q},{BB4,Q},{BB4,Q},
+                      {AA4,H},{R,Q},{DD4,Q},
+                      
+                      {EE4,Q},{BB4,Q},{BB4,H+H},               // Gilligan
+                      {GG4,Q},{AA4,Q},{DD4,Q},{DD4,H+H},{R,Q}, // the skipper too
+                      {DD4,Q},{EE4,Q},{BB4,Q},{BB4,H+H},       // the millionaire
+                      {AA4,Q},{GG4,Q},{AA4,W},                 // and his wife
+                      {R,Q},{Fs4,Q},{EE4,H},{BB4,Q},{AA4,H},   // the movie star
+                      {R,Q},{Fs4,E},{Fs4,E},{EE4,Q},{EE4,Q},   // the professor
+                      {BB4,H},{AA4,Q},{AA4,Q},{DD5,H},         // and Mary Ann,
+                      
+                      {R,Q},{EE5,H},{EE5,Q},                   // here on 
+                      {Fs5,Q},{Fs5,Q},{DD5,H},                 // Gilligan's
+                      {EE5,W+Q}                                // Isle!
+                      
+}; 
+int num_notes9 = 166;
+int led_notes9[]={AA4,BB4,CC4,DD4,EE4,FF4,DD5,GG4,DD5,EE5};
+
+ 
+// STAR WARS
+int bpm10 = 140;
+int song10[200][2] = {
+                     {DD4,E},{DD4,E},{DD4,E},                  //meas 1
+                     {GG4,H},{DD5,H},                          //meas 2
+                     {CC5,E},{BB4,E},{AA4,E},{GG5,H},{DD5,Q},  //meas 3
+                     {CC5,E},{BB4,E},{AA4,E},{GG5,H},{DD5,Q},  //meas 4
+                     {CC5,E},{BB4,E},{CC5,E},{AA4,H},{R,Q},{DD4,E},{DD4,E},{DD4,E},    //meas 5 (23)
+                     
+                     {GG4,H},{DD5,H},                          //meas 6
+                     {CC5,E},{BB4,E},{AA4,E},{GG5,H},{DD5,Q},  //meas 7
+                     {CC5,E},{BB4,E},{AA4,E},{GG5,H},{DD5,Q},  //meas 8
+                     {CC5,E},{BB4,E},{CC5,E},{AA4,H},{R,Q},{DD4,E},{DD4,E},    //meas 9 (41)
+                     
+                     {EE4,Q+E},{EE4,E},{CC5,E},{BB4,E},{AA4,E},{GG4,E}, //meas 10 (page 2)
+                     {GG4,E},{AA4,E},{BB4,E},{AA4,E},{EE4,E},{Fs4,Q},{DD4,E},{DD4,E}, //meas 11
+                     {EE4,Q+E},{EE4,E},{CC5,E},{BB4,E},{AA4,E},{GG4,E}, //meas 12
+                     {DD5,Q},{AA4,H},{DD4,E},{DD4,E},                   //meas 13
+                     {EE4,Q+E},{EE4,E},{CC5,E},{BB4,E},{AA4,E},{GG4,E}, //meas 14
+                     {GG4,E},{AA4,E},{BB4,E},{AA4,E},{EE4,E},{Fs4,Q},{DD5,E},{DD5,E}, //meas 15
+                     {GG5,E},{FF5,E},{Eb5,E},{DD5,E},{CC5,E},{Bb4,E},{AA4,E},{GG4,E}, //meas 16
+                     {DD5,H+Q},{DD4,E},{DD4,E},{DD4,E},{DD4,Q},{DD4,E},{DD4,E},{DD4,E}, // meas 17 (95)
+                     
+                     {GG4,H},{DD5,H},                          //meas 18 page 3
+                     {CC5,E},{BB4,E},{AA4,E},{GG5,H},{DD5,Q},  //meas 19
+                     {CC5,E},{BB4,E},{AA4,E},{GG5,H},{DD5,Q},  //meas 20
+                     {CC5,E},{BB4,E},{CC5,E},{AA4,H},{R,Q},{DD4,E},{DD4,E},{DD4,E},    //meas 21 (115) 
+                     
+                     {GG4,H},{DD5,H},                          //meas 22
+                     {CC5,E},{BB4,E},{AA4,E},{GG5,H},{DD5,Q},  //meas 23
+                     {GG5,E},{FF5,E},{Db5,E},{Bb5,H},{AA5,Q},  //meas 24
+                     {GG5,H+Q},{GG3,E},{GG3,E},{GG3,E},{GG3,Q},{R,Q} //meas 25   (133) 
+                       
+};
+int num_notes10 = 133;
+int led_notes10[]={GG3,AA4,BB4,DD4,GG4,CC5,DD5,GG5,AA5,BB5};
+
+// TWINKLE TWINKLE LITTLE STAR
+int bpm11 = 120;
+int song11[100][2] = { {CC4,Q}, {CC4,Q}, {GG4,Q}, {GG4,Q}, {AA4,Q}, {AA4,Q}, {GG4,H}, //7 TWINKLE TWINKLE LITTLE STAR
+                      {FF4,Q}, {FF4,Q}, {EE4,Q}, {EE4,Q}, {DD4,Q}, {DD4,Q}, {CC4,H}, //7 HOW I WONDER WHAT YOU ARE
+                      {GG4,Q}, {GG4,Q}, {FF4,Q}, {FF4,Q}, {EE4,Q}, {EE4,Q}, {DD4,H}, //7 UP ABOVE THE WORLD SO HIGH
+                      {GG4,Q}, {GG4,Q}, {FF4,Q}, {FF4,Q}, {EE4,Q}, {EE4,Q}, {DD4,H}, //7 LIKE A DIAMOND IN THE SKY
+                      {CC4,Q}, {CC4,Q}, {GG4,Q}, {GG4,Q}, {AA4,Q}, {AA4,Q}, {GG4,H}, //6 TWINKLE TWINKLE LITTLE STAR
+                      {FF4,Q}, {FF4,Q}, {EE4,Q}, {EE4,Q}, {DD4,Q}, {DD4,Q}, {CC4,H} //7 HOW I WONDER WHAT YOU ARE
+};
+int num_notes11 = 42;
+int led_notes11[]={CC4,DD4,EE4,FF4,GG4,AA4,BB4,CC5,DD5,EE5};
+
+
+// CLOCKS
+int bpm12 = 120;
+int song12[100][2] = { {Eb5,E}, {Bb4,E}, {GG4,E}, {Eb5,E}, {Bb4,E}, {GG4,E}, {Eb5,E}, {Bb4,E},
+                      {Db5,E}, {Bb4,E}, {FF4,E}, {Db5,E}, {Bb4,E}, {FF4,E}, {Db5,E}, {Bb4,E},
+                      {Db5,E}, {Bb4,E}, {FF4,E}, {Db5,E}, {Bb4,E}, {FF4,E}, {Db5,E}, {Bb4,E}, 
+                      {CC5,E}, {Ab4,E}, {FF4,E}, {CC5,E}, {Ab4,E}, {FF4,E}, {CC5,E}, {Ab4,E},
+                      {Eb5,E}, {Bb4,E}, {GG4,E}, {Eb5,E}, {Bb4,E}, {GG4,E}, {Eb5,E}, {Bb4,E},
+                      {Db5,E}, {Bb4,E}, {FF4,E}, {Db5,E}, {Bb4,E}, {FF4,E}, {Db5,E}, {Bb4,E},
+                      {Db5,E}, {Bb4,E}, {FF4,E}, {Db5,E}, {Bb4,E}, {FF4,E}, {Db5,E}, {Bb4,E}, 
+                      {CC5,E}, {Ab4,E}, {FF4,E}, {CC5,E}, {Ab4,E}, {FF4,E}, {CC5,E}, {Ab4,E},
+};
+int num_notes12 = 64;
+int led_notes12[]={FF4,GG4,Ab4,Bb4,CC5,Db5,Eb5,FF5,GG5,Ab5};
+
+// POKER FACE
+int bpm13 = 120;
+int song13[100][2] = { {AA4,E}, {AA4,E}, {AA3,E}, {AA3,E}, {EE4,E}, {EE4,E}, {AA3,E}, {AA3,E},
+                      {AA4,E}, {AA4,E}, {FF4,E}, {CC4,E}, {GG4,E}, {GG4,E}, {GG3,E}, {GG3,E},
+                      
+                      {AA4,E}, {AA4,E}, {AA3,E}, {AA3,E}, {EE4,E}, {EE4,E}, {AA3,E}, {AA3,E},
+                      {AA4,E}, {AA4,E}, {FF4,E}, {CC4,E}, {GG4,E}, {GG4,E}, {GG3,E}, {GG3,E},
+                      
+                      {CC5,E}, {CC5,E}, {CC5,E}, {CC5,E}, {CC5,E}, {CC5,E}, {CC5,E}, {CC5,E}, {CC5,E}, {CC5,E}, {CC5,E}, {CC5,E}, {DD5,E}, {CC5,E}, {DD5,E}, {CC5,E},
+                      {EE5,E}, {EE5,E}, {EE5,E}, {EE5,E}, {EE5,E}, {EE5,E}, {EE5,E}, {EE5,E}, {EE5,E}, {EE5,E}, {EE5,E}, {EE5,E}, {FF5,E}, {EE5,E}, {FF5,E}, {EE5,E},
+};
+int num_notes13 = 64;
+int led_notes13[]={GG3,AA3,CC4,EE4,FF4,GG4,AA4,CC5,DD5,EE5,};
 
 
 // **********************************************************************************************
@@ -372,7 +683,54 @@ void choose_song(int which_song) {
       song = *song5;
       led_notes = led_notes5;
       break;
-    
+    case MOUNTAIN_KING:
+      bpm = &bpm6;
+      num_notes = &num_notes6;
+      song = *song6;
+      led_notes = led_notes6;
+      break;
+    case BAA_BAA:
+      bpm = &bpm7;
+      num_notes = &num_notes7;
+      song = *song7;
+      led_notes = led_notes7;
+      break;
+    case BAT_MAN:
+      bpm = &bpm8;
+      num_notes = &num_notes8;
+      song = *song8;
+      led_notes = led_notes8;
+      break;      
+     case GILLIGAN:
+      bpm = &bpm9;
+      num_notes = &num_notes9;
+      song = *song9;
+      led_notes = led_notes9;
+      break;        
+     case STAR_WARS:
+      bpm = &bpm10;
+      num_notes = &num_notes10;
+      song = *song10;
+      led_notes = led_notes10;
+      break;
+    case TWINKLE_TWINKLE:
+      bpm = &bpm11;
+      num_notes = &num_notes11;
+      song = *song11;
+      led_notes = led_notes11;
+      break;
+     case CLOCKS:
+      bpm = &bpm12;
+      num_notes = &num_notes12;
+      song = *song12;
+      led_notes = led_notes12;
+      break;
+     case POKER_FACE:
+      bpm = &bpm13;
+      num_notes = &num_notes13;
+      song = *song13;
+      led_notes = led_notes13;
+      break;      
   }
 }
 
@@ -482,7 +840,7 @@ void setup() {
    Serial.begin(9600);
  }
  // set inputs
- pinMode(switch_connect, INPUT);
+// pinMode(switch_connect, INPUT);
  
  
  // set outputs
@@ -492,19 +850,33 @@ void setup() {
   } 
   leds_off();
   delay(1000); // delay 1sec before starting music
+//  randomSeed(analogRead(14)); // seed random generator using Analog pin 14 (assuming not connected)
 }
 
 // the loop routine runs over and over again forever
 // basically like main with while(1).
 void loop() {
-  
- music_mode = digitalRead(switch_connect);
+  volatile int random_song;
+//  volatile int last_random_song;
+// music_mode = digitalRead(switch_connect);
  
  if (DEBUGME == 1) {
    debug_print_song(IMPERIAL_MARCH);
  }
  
- if (music_mode == HIGH) { // play all songs
+ if (RANDOM == 1) {
+   random_song = random(1,NUM_SONGS+1);
+  /* while (random_song == last_random_song) { // prevent song from playing twice consecutively
+     randomSeed(analogRead(14));
+     random_song = random(1,NUM_SONGS+1); // get different random song
+   } */
+
+   play_song(random_song);
+   delay(1000);
+//   last_random_song = random_song;
+ } else {
+   play_song(MOUNTAIN_KING);
+   delay(1000);
  play_song(IMPERIAL_MARCH);
  delay(1000);
  play_song(JINGLE_BELL_ROCK);
@@ -515,10 +887,26 @@ void loop() {
  delay(1000); 
    play_song(ODE_TO_JOY);
  delay(1000);
- } else {         // play only scales
+    play_song(BAA_BAA);
+    delay(1000); 
+    play_song(BAT_MAN);
+    delay(1000);
+    play_song(GILLIGAN);
+    delay(1000); 
+    play_song(STAR_WARS);
+    delay(1000); 
+    play_song(TWINKLE_TWINKLE);
+    delay(1000);
+    play_song(CLOCKS);
+    delay(1000); 
+    play_song(POKER_FACE);
+    delay(1000);    
+
+    // scales should always be played last!    
    play_song(SCALES);
    delay(1000);
  }
+
 }
     
     
