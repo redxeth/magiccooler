@@ -149,7 +149,7 @@
 #define R       0        // rest
 
 #define DEBUGME 0        // set to 0 for no debug, 1 for debug song arrays, 2 for print debug while playing music
-#define RANDOM 1         // set to 0 for play songs sequential, 1 for random play
+#define RANDOM 0         // set to 0 for play songs sequential, 1 for random play
 
 // DURATION OF THE NOTES
 #define S_S 1    // Q/4 // sixteenth 1/16
@@ -174,7 +174,14 @@
 #define TWINKLE_TWINKLE            11 //GRH
 #define CLOCKS                     12 //GRH
 #define POKER_FACE                 13 //GRH
-#define NUM_SONGS                  14  // update to be total number of songs in playlist
+#define AVENGERS                   14 //Bryan's song
+#define INSPECTOR_GADGET           15 //DH
+#define AUDITION                   16 //Kid?
+#define MULBERRY_BUSH              17 //Luka
+#define LONDON_BRIDGE              18 //SH
+#define HAPPY_BIRTHDAY             19 //SH
+#define SHOO_FLY                   20 //SH
+#define NUM_SONGS                  21 // update to be total number of songs in playlist
 
 // FUTURE SONGS
 //  - what child is this
@@ -618,6 +625,142 @@ int song13[100][2] = { {AA4,E}, {AA4,E}, {AA3,E}, {AA3,E}, {EE4,E}, {EE4,E}, {AA
 int num_notes13 = 64;
 int led_notes13[]={GG3,AA3,CC4,EE4,FF4,GG4,AA4,CC5,DD5,EE5,};
 
+// Avengers
+int bpm14 = 120;
+int song14[100][2] = {
+                     {DD4,Q+E}, {DD4,S_S}, {DD4,S_S}, {DD4,Q}, {DD4,E}, {DD4,S_S}, {DD4,S_S},
+                      {Eb4,S_S}, {Eb4,S_S}, {Eb4,Q}, {Eb4,S_S}, {Eb4,S_S}, {EE4,E}, {EE4,S_S}, {EE4,S_S}, {EE4, E},
+                      {FF4,S_S}, {FF4,S_S}, {FF4,Q}, {FF4,S_S}, {FF4,S_S}, {EE4,Q}, {EE4,S_S}, {EE4,S_S}, {EE4, E},
+                      {Eb4,S_S}, {Eb4,S_S}, {Eb4,Q}, {DD4,S_S}, {DD4,S_S}, {EE4,Q}, {GG4,Q},
+                      
+                      {DD4,Q+E}, {DD4,S_S}, {DD4,S_S}, {DD4,Q}, {DD4,E}, {DD4,S_S}, {DD4,S_S},
+                      {Eb4,S_S}, {Eb4,S_S}, {Eb4,Q}, {Eb4,S_S}, {Eb4,S_S}, {EE4,E}, {EE4,S_S}, {EE4,S_S}, {EE4, E},
+                      {FF4,S_S}, {FF4,S_S}, {FF4,Q}, {FF4,S_S}, {FF4,S_S}, {EE4,Q}, {EE4,S_S}, {EE4,S_S}, {EE4, E},
+                      {Eb4,S_S}, {Eb4,S_S}, {Eb4,Q}, {DD4,S_S}, {DD4,S_S}, {EE4,Q}, {GG4,Q}
+                      
+};
+int num_notes14 = 64;
+int led_notes14[]={GG4,AA4,CC4,EE4,FF4,GG4,AA4,CC5,DD5,EE5};
+
+// INSPECTOR GADGET- Daniel-- not quite done
+int bpm15 = 200;
+int song15[100][2] = {
+                  //    {EE3,Q+E},{R,Q},{EE2,Q},{R,Q},                                   //meas 1
+                  //    {EE3,E+S_S},{EE3,E+S_S},{DD3,Q+E},{CC3,Q+E},{BB3,Q+E},           //meas 2
+                  
+                      {AA3,E},{BB3,E},{CC4,E},{DD4,E},{EE4,Q+E},{CC4,Q},               //meas 3
+                      {Ds4,Q},{BB3,Q},{DD4,Q},{CC4,Q},                                 //meas 4  
+                      
+                      {AA3,E},{BB3,E},{CC4,E},{DD4,E},{EE4,Q+E},{AA4,Q},               //meas 5
+                      {CC4,H},                                                       //meas 6
+                      
+                      {AA3,E},{BB3,E},{CC4,E},{DD4,E},{EE4,Q+E},{CC4,Q},               //meas 7 (page 2)
+                      {Ds4,Q},{BB3,Q},{DD4,Q},{CC4,Q},                                 //meas 8  
+                      
+                      {AA3,Q+E},{R,Q+H},                                               //meas 9
+                      {R,Q},{EE4,Q},{AA4,H},                                           //meas 10
+                      {R,Q},{FF3,E},{Ab3,E},{DD4,Q+E},{Bb3,E},{DD4,E},                 //meas 11
+                      
+                      {FF4,H},{R,H},                                                   //meas 12
+                         
+                      {AA3,E},{BB3,E},{CC4,E},{DD4,E},{EE4,Q+E},{CC4,Q},               //meas 3
+                      {Ds4,Q},{BB3,Q},{DD4,Q},{CC4,Q},                                 //meas 4  
+                      
+                      {AA3,E},{BB3,E},{CC4,E},{DD4,E},{EE4,Q+E},{AA4,Q},               //meas 5
+                      {AA4,W},                                                        //meas 6
+                      
+                      {AA3,E},{BB3,E},{CC4,E},{DD4,E},{EE4,Q+E},{CC4,Q},               //meas 7 (page 2)
+                      {Ds4,Q},{BB3,Q},{DD4,Q},{CC4,Q},                                 //meas 8  
+                      
+                      {FF2,Q},{EE2,Q},{FF2,Q},{EE2,Q},                                  //meas 13
+                      {AA2,Q},{Gs2,Q},{CC3,Q},{AA2,Q}                                   //meas 14
+                      
+};
+
+
+                      
+
+int num_notes15= 60;//  up to meas 8 minus meas 2
+int led_notes15[]={EE2,CC3,DD3,EE3};
+
+
+// AUDITION - ??? Not quite done
+int bpm16 = 40;
+int song16[200][2] = {
+       {FF2,E},{Bb2,S_S},{AA2,S_S},{Bb2,S_S},{CC3,S_S},{DD3,E},{FF2,E},{Bb2,S_S},
+     {AA2,S_S},{Bb2,S_S},{CC3,S_S},{DD3,E},{DD3,E},{CC3,E},{DD3,S_S},{CC3,E},
+   {Bb2,S_S},{AA2,S_S},{Bb2,S_S},{CC3,S_S},{DD3,E},{FF2,E},{Bb2,S_S},{AA2,S_S},{Bb2,S_S},{CC3,S_S},{DD3,E},{Bb2,E},{FF2,Q},
+       {FF2,S_S},{Eb2,S_S},{DD2,S_S},{CC2,S_S},{Bb1,E},{Bb1,E},{Bb1,H}
+     };
+  
+int num_notes16 = 100;
+int led_notes16[] = {};
+
+
+//MULBERRY BUSH - Luka - not quite done...
+int bpm17 = 240;
+int song17[200][2] = {
+   {FF4,Q},{R,S_S},{FF4,Q},{R,S_S},{FF4,Q},{R,S_S},{FF4,H},{AA4,Q},{CC5,Q},{R,S_S},{CC5,Q},{AA4,Q},{FF4,H},{R,S_S},{FF4,Q}
+
+};
+
+int num_notes17=100;
+int led_notes17[]= {AA4};
+
+
+// London Bridge - Samuel
+int bpm18 = 100;
+int song18[50][2] = {{GG4,Q}, {AA4,Q}, {GG4,Q}, {FF4,Q}, {EE4,Q}, {FF4,Q}, {GG4,H}, {DD4,Q}, {EE4,Q}, {FF4,H}, {EE4,Q}, {FF4,Q}, {GG4,H}, 
+{GG4,Q}, {AA4,Q}, {GG4,Q}, {FF4,Q}, {EE4,Q}, {FF4,Q}, {GG4,H}, {DD4,H}, {GG4,H}, {EE4,Q}, {CC4,H+Q}        
+};
+int num_notes18 = 24;
+int led_notes18[]={CC4,DD4,EE4,FF4,GG4,AA4,BB4,CC5,DD5,EE5};
+
+
+//HAPPY BIRTHDAY - Samuel
+int bpm19 = 90;
+int song19[50][2] = {{BB4,E}, {BB4,E}, {Cs5,Q}, {BB4,Q}, {EE5,Q}, {Ds5,H}, {BB4,E}, {BB4,E}, {Cs5,Q}, {BB4,Q}, {Fs5,Q}, {EE5,H}, 
+{BB4,E}, {BB4,E}, {BB5,Q}, {Gs5,Q}, {EE5,Q}, {Ds5,Q}, {Cs5,Q+E}, {AA5,E}, {AA5,E}, {Gs5,Q}, {EE5,Q}, {Fs5,Q}, {EE5,H+Q}
+};
+
+int num_notes19 = 26;
+int led_notes19[]={BB4,Cs5,Ds5,EE5,Fs5,Gs5,AA5,BB5,CC6,DD6};
+
+//SHOO FLY - Not quite done yet... Samuel
+int bpm20 = 100;
+int song20[50][2] = {
+                     {BB4,E}, {GG4,Q+E}, {AA4,Q}, {BB4,Q}, {CC4,E}, {AA4,Q+E}, {AA4,Q}, {Fs4,Q+E}, {GG4,Q+E}, {AA4,Q}, {BB4,Q}, {GG4,Q+E}, {BB4,E}, 
+                     {GG4,Q+E}, {AA4,Q}, {BB4,Q}, {CC4,E}, {AA4,Q+E}, {DD4,Q}, {DD4,Q}, {DD4,Q}, {CC5,Q}, {BB4,Q}, {AA4,Q}, {GG4,W} 
+};
+
+int num_notes20 = 26;
+int led_notes20[]={Fs4,GG4,AA4,BB4,CC4,DD5,EE5,Fs5,GG5,AA5};
+
+
+
+/* int bpm17 = 120;
+int song17[200][2] = {
+
+};
+
+int num_notes = 100;
+int led_notes16[]= {}
+
+int bpm17 = 120;
+int song17[200][2] = {
+
+};
+
+int num_notes = 100;
+int led_notes16[]= {}
+
+int bpm17 = 120;
+int song17[200][2] = {
+
+};
+
+int num_notes = 100;
+int led_notes16[]= {}*/
 
 // **********************************************************************************************
 // **********************************************************************************************
@@ -731,6 +874,49 @@ void choose_song(int which_song) {
       song = *song13;
       led_notes = led_notes13;
       break;      
+    case AVENGERS:
+      bpm = &bpm14;
+      num_notes = &num_notes14;
+      song = *song14;
+      led_notes = led_notes14;
+      break;
+    case INSPECTOR_GADGET:
+      bpm = &bpm15;
+      num_notes = &num_notes15;
+      song = *song15;
+      led_notes = led_notes15;
+      break;  
+    case AUDITION:
+      bpm = &bpm16;
+      num_notes = &num_notes16;
+      song = *song16;
+      led_notes = led_notes16;
+      break; 
+    case MULBERRY_BUSH:
+      bpm = &bpm17;
+      num_notes = &num_notes17;
+      song = *song17;
+      led_notes = led_notes17;
+      break;   
+    case LONDON_BRIDGE:
+      bpm = &bpm18;
+      num_notes = &num_notes18;
+      song = *song18;
+      led_notes = led_notes18;
+      break;
+    case HAPPY_BIRTHDAY:
+      bpm = &bpm19;
+      num_notes = &num_notes19;
+      song = *song19;
+      led_notes = led_notes19;
+      break; 
+    case SHOO_FLY:
+      bpm = &bpm20;
+      num_notes = &num_notes20;
+      song = *song20;
+      led_notes = led_notes20;
+      break;         
+      
   }
 }
 
@@ -875,6 +1061,7 @@ void loop() {
    delay(1000);
 //   last_random_song = random_song;
  } else {
+  
    play_song(MOUNTAIN_KING);
    delay(1000);
  play_song(IMPERIAL_MARCH);
@@ -901,6 +1088,17 @@ void loop() {
     delay(1000); 
     play_song(POKER_FACE);
     delay(1000);    
+    play_song(INSPECTOR_GADGET);
+    delay(1000);
+    play_song(MULBERRY_BUSH);
+    delay(1000);
+    play_song(AVENGERS);
+    delay(1000); 
+    play_song(LONDON_BRIDGE);
+    delay(1000);
+    play_song(HAPPY_BIRTHDAY);
+    delay(1000);
+
 
     // scales should always be played last!    
    play_song(SCALES);
