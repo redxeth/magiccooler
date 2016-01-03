@@ -189,11 +189,7 @@ long debounceDelay = 50;                          // debounce time in mS
 
 // mode stuff
 int modeState = 0;                                // mode of device -- used for test features
-const int modeMax = 11;                           // put here maximum mode to use
-                                                  // mode            function
-                                                  // 0               all relays off
-                                                  // 1-10            activate that particular relay only
-                                                  // 11              all relays on
+const int modeMax = 22;                           // put here maximum mode to use, see relays_by_mode() for details on mode usage
 
 // Use pointers for global variables
 int *song;           // use to point to array of int.  E.G. to assign since 2d array: song = *song0;            to use: *(*(song+i)+j) <-- questionable
@@ -481,17 +477,28 @@ void switchStuff() {
 }
 
 // Turn on only one specific relay
-void relays_by_num(int which_relay) {
+// option to leave other relays on if already on
+void relays_by_num(int which_relay, int leaveon) {
+  
   for (int i=0; i < num_relays; i++) {
     if (i == which_relay - 1) {
       digitalWrite(controls[i],LOW);  
     } else {
+      if (leaveon == LOW) {
       digitalWrite(controls[i],HIGH);  
     }
   }
 }
+}
 
 // Set relays according to mode
+// mode            function
+// 0               all relays off
+// 1-10            activate that particular relay only
+// 11              all relays on
+// 12              all relays off
+// 13-22           turn relays on but leave them on as you turn them on, to test out how many can be turned on at once...
+
 void relays_by_mode() {
  if (DEBUGME == 1) {
    Serial.printf("Mode %i\r\n",modeState);
@@ -500,11 +507,17 @@ void relays_by_mode() {
     case 0:
         all_relays_off();
       break;
-    case modeMax:
+    case 11:
         all_relays_on();
       break;
-    default:
-        relays_by_num(modeState);
+    case 12:
+      all_relays_off();
+      break;
+    default: // 1-10 or 13-22
+      if (modeState < 11) // relays 1 to 10, one at a time
+        relays_by_num(modeState,LOW);
+      else
+        relays_by_num(modeState-12,HIGH); // relays 1 to 10, leave on as turn on      
       break;
   }
 }
@@ -565,10 +578,6 @@ void loop() {
   } else {
     // play songs normally
     if (DEBUGME == 1) {
-      
-      
-      
-      
       Serial.printf("Play Song %i\r\n", 0);
     } 
    play_song(songNum);
