@@ -167,10 +167,26 @@ int songNum = 0;                                  // song being played
 const int numSongs = 4;                           // number of songs to play
 
 // relay stuff
-const int num_relays = 10;                              // WRITE HERE TOTAL NUMBER OF RELAYS CONNECTED
+const int num_relays = 10;                        // <== WRITE HERE TOTAL NUMBER OF RELAYS CONNECTED
 const int controls[] =   {22,21,20,19,18,17,16,15,14,13};   // Digital output pin on Teensy associated with the relay number defined below
-//const int relay_nums[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9};   // Relay number used below associated with the digital pins in controls[]
-const int relay_nums[] = { 1, 2, 3, 4, 5, 7, 8, 9, 1, 2}; // relays 0 and 6 (1 and 7) are not connected to reuse have notes share relays -- remap so 0 and 6 aren't used
+
+// map from real/physical relays in HW to 'electrical' relays in SW
+// e.g. physical relay 7 (1-10) is mapped to electrical relay 2 (1-10) which is relay number 1 (0-9) shown in index 6 below
+// currently used by TEST MODE
+// Magic Cooler current wiring:
+//    Phys Relay : 1  2  3  4  5  6  7  8  9  10
+//       E Relay : 7  4  1  8  3  5  2  6  9  10
+//     Relay Num : 6  3  0  7  2  4  1  5  8  9 <= map below
+//         index : 0  1  2  3  4  5  6  7  8  9
+const int relay_map[] = { 6, 3, 0, 7, 2, 4, 1, 5, 8, 9 };
+
+// relay ordering to be used by songs
+// currently used by SONG PLAYING MODE
+                      // { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9};     // Index (i.e. which note in relay_notes[] to play for the given relay, e.g. note located at i=2 is associated with relay_nums[3] connected to control[3] = pin 19
+// const int relay_nums[] = { 1, 2, 3, 4, 5, 7, 8, 9, 1, 2};  // relays 0 and 6 (1 and 7) are not connected to reuse have notes share relays -- remap so 0 and 6 aren't used - 2015 Christmas setup
+const int relay_nums[] = { 6, 3, 0, 7, 2, 4, 1, 5, 8, 9 };    // Christmas 2016 - repaired so that all 10 relays work
+                                                              //(sortof, using one active-high relay so connected power to NC connection instead of NO, could prob reverse sense in a future code update)
+                                                              // using the new relay mapping
 
 // speaker stuff
 const int speaker_connect = 23;                   // pin to which audio output (speaker, headphones) is connected
@@ -355,11 +371,11 @@ void match_relay(int note, int state) {
   
   // only set or unset relays that match the note
   for (int i=0; i < num_relays; i++) {
-    if (relay_notes[i] == note) {
+    if (relay_notes[i] == note) { // if note currently playing matches a note in relay_notes[] (which is defined for each song), then activate that relay 
       if (DEBUGME == 1) {
         Serial.printf("Match Found at i = : %i, relay_notes[i] = %i, relay_nums[i] = %i, controls[relay_nums[i]] = %i \r\n", i, relay_notes[i], relay_nums[i], controls[relay_nums[i]]);
       }
-      digitalWrite(controls[relay_nums[i]],state); // set control
+      digitalWrite(controls[relay_nums[i]],state); // set control pin to activate relay
     } 
   } 
 }
@@ -476,16 +492,18 @@ void switchStuff() {
   switchState = digitalRead(switchPin);
 }
 
-// Turn on only one specific relay
+// Used to turn on relays by number
+// we'll use relay_map[] to permit using physical
+// relay numbers
 // option to leave other relays on if already on
 void relays_by_num(int which_relay, int leaveon) {
   
   for (int i=0; i < num_relays; i++) {
     if (i == which_relay - 1) {
-      digitalWrite(controls[i],LOW);  
+      digitalWrite(controls[relay_map[i]],LOW);  
     } else {
       if (leaveon == LOW) {
-      digitalWrite(controls[i],HIGH);  
+        digitalWrite(controls[relay_map[i]],HIGH);
     }
   }
 }
@@ -514,7 +532,7 @@ void relays_by_mode() {
       all_relays_off();
       break;
     default: // 1-10 or 13-22
-      if (modeState < 11) // relays 1 to 10, one at a time
+      if (modeState < 11) // Trelays 1 to 10, one at a time
         relays_by_num(modeState,LOW);
       else
         relays_by_num(modeState-12,HIGH); // relays 1 to 10, leave on as turn on      
